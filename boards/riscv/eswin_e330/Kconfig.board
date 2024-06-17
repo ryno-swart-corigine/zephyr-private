@@ -1,0 +1,7 @@
+# Copyright (c) 2022 ESWIN Co,ltd. 
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_ESWIN_E330
+	bool "ESWIN E330 Minic"
+	depends on SOC_ESWIN_E330
+

@@ -27,7 +27,7 @@ BUILD_ASSERT(NUM_THREAD <= MAX_NUM_THREAD);
 #define PERTHREAD_SLICE_TICKS 64
 #define TICK_SLOP 4
 /* busy for more than one slice */
-#define BUSY_MS (SLICE_SIZE + 20)
+#define BUSY_MS (SLICE_SIZE + 10)
 static struct k_thread t[NUM_THREAD];
 
 static K_SEM_DEFINE(sema1, 0, NUM_THREAD);

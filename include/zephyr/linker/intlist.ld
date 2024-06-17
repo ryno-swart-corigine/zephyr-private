@@ -27,7 +27,7 @@
  *
  * MEMORY {
  *	.. other regions ..
- *	IDT_LIST        : ORIGIN = 0xfffff7ff, LENGTH = 2K
+ *	IDT_LIST        : ORIGIN = 0xff000000, LENGTH = 10K
  * }
  */
 

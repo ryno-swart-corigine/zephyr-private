@@ -174,6 +174,10 @@ SECTION_FUNC(exception.entry, _isr_wrapper)
 	csrr t2, mstatus
 	sr t2, __z_arch_esf_t_mstatus_OFFSET(sp)
 
+	/* Save MCAUSE register */
+	csrr t1, mcause
+	sr t1, __z_arch_esf_t_mcause_OFFSET(sp)
+
 #if defined(CONFIG_FPU_SHARING)
 	/* determine if FPU access was disabled */
 	li t1, MSTATUS_FS
@@ -181,6 +185,11 @@ SECTION_FUNC(exception.entry, _isr_wrapper)
 	bnez t1, no_fp
 	/* determine if this is an Illegal Instruction exception */
 	csrr t2, mcause
+
+    /* Get IRQ causing interrupt we used clic mode */
+	li t0, CONFIG_RISCV_MCAUSE_EXCEPTION_MASK
+	and t2, t2, t0
+
 	li t1, 2		/* 2 = illegal instruction */
 	bne t1, t2, no_fp
 	/* determine if we trapped on an FP instruction. */
@@ -649,8 +658,10 @@ fp_trap_exit:
 	/* Restore MEPC and MSTATUS registers */
 	lr t0, __z_arch_esf_t_mepc_OFFSET(sp)
 	lr t2, __z_arch_esf_t_mstatus_OFFSET(sp)
+	lr t1, __z_arch_esf_t_mcause_OFFSET(sp)
 	csrw mepc, t0
 	csrw mstatus, t2
+	csrw mcause, t1
 
 #ifdef CONFIG_USERSPACE
 	/*

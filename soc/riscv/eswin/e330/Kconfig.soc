@@ -1,0 +1,25 @@
+# ESWIN E330 SOC configuration options
+
+# Copyright (c) 2022 ESWIN Co,ltd.
+# SPDX-License-Identifier: Apache-2.0
+
+choice
+	prompt "ESWIN E330 SOC implementation"
+	depends on SOC_SERIES_ESWIN_E330
+
+config SOC_ESWIN_E330
+	bool "ESWIN 330"
+	select ATOMIC_OPERATIONS_C
+	select INCLUDE_RESET_VECTOR
+	select CPU_HAS_FPU_DOUBLE_PRECISION
+	select RISCV_ISA_RV32I
+	select RISCV_ISA_EXT_M
+	select RISCV_ISA_EXT_A
+	select RISCV_ISA_EXT_C
+	select RISCV_ISA_EXT_B
+	select RISCV_ISA_EXT_P
+	select RISCV_ISA_EXT_ZICOND
+	select PMP_NO_NA4 if RISCV_PMP
+	# e330: G=1(pmp granularity=2^(1+2)=8),not support NA4
+
+endchoice

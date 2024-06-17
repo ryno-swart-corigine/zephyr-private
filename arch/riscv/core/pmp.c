@@ -164,6 +164,11 @@ static bool set_pmp_entry(unsigned int *index_p, uint8_t perm,
 	__ASSERT((start & (CONFIG_PMP_GRANULARITY - 1)) == 0, "misaligned start address");
 	__ASSERT((size & (CONFIG_PMP_GRANULARITY - 1)) == 0, "misaligned size");
 
+    if (size == 4) {
+		size = 8;
+		/* adapt for E330, PMP granularity G=1, 8byte */
+	}
+
 	if (index >= index_limit) {
 		LOG_ERR("out of PMP slots");
 		ok = false;
@@ -324,8 +329,8 @@ void z_riscv_pmp_init(void)
 	unsigned long pmp_cfg[1];
 	unsigned int index = 0;
 
-	/* The read-only area is always there for every mode */
-	set_pmp_entry(&index, PMP_R | PMP_X | PMP_L,
+	/* The read and write area is always there for every mode */
+	set_pmp_entry(&index, PMP_R | PMP_X | PMP_W | PMP_L,
 		      (uintptr_t)__rom_region_start,
 		      (size_t)__rom_region_size,
 		      pmp_addr, pmp_cfg, ARRAY_SIZE(pmp_addr));

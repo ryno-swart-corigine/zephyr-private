@@ -64,6 +64,7 @@ void arch_new_thread(struct k_thread *thread, k_thread_stack_t *stack,
 	 *    thread stack.
 	 */
 	stack_init->mstatus = MSTATUS_DEF_RESTORE;
+	stack_init->mcause = MINTSTATUS_MPP_M | MINTSTATUS_MPIE_EN;
 
 #if defined(CONFIG_FPU_SHARING)
 	/* thread birth happens through the exception return path */

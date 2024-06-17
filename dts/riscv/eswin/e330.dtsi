@@ -1,0 +1,122 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+
+/dts-v1/;
+#include <mem.h>
+// #include <dt-bindings/timer/riscv-machine-timer.h>
+// #include <dt-bindings/i2c/i2c.h>
+
+/ {
+	#address-cells = < 0x01 >;
+	#size-cells = < 0x01 >;
+	compatible = "eswin e330";
+	model = "Eswin, E330";
+
+	flash@60000000 {
+		bank-width = < 0x04 >;
+		reg = < 0x60000000 0x2000000 0x62000000 0x2000000 >;
+		compatible = "cfi-flash";
+	};
+
+	cpus {
+		#address-cells = < 0x01 >;
+		#size-cells = < 0x00 >;
+		timebase-frequency = < 20000000 >;
+
+		cpu: cpu@0 {
+			device_type = "cpu";
+			reg = < 0x00 >;
+			status = "okay";
+			compatible = "riscv";
+			device_type = "cpu";
+			d-cache-block-size = <32>;
+			d-cache-sets = <1024>;
+			d-cache-size = <131072>;
+
+			i-cache-block-size = <32>;
+			i-cache-sets = <2048>;
+			i-cache-size = <131072>;
+		};
+
+	};
+
+	ddr: memory@c0000000 {
+		device_type = "memory";
+		reg = < 0xc0000000 0x10000000 >;
+	};
+
+	soc {
+		#address-cells = < 0x01 >;
+		#size-cells = < 0x01 >;
+		compatible = "simple-bus";
+		ranges;
+
+		itcm: memory@20900000 {
+			reg = < 0x20900000 0x10000 >;
+			zephyr,memory-region = "ITCM";
+			compatible = "riscv,itcm";
+			reg-names = "mem";
+		};
+
+		dtcm: memory@20910000 {
+			compatible = "riscv,dtcm";
+			zephyr,memory-region = "DTCM";
+			reg = < 0x20910000 0x8000 >;
+			reg-names = "mem";
+		};
+
+		soc_version: version@30030000 {
+			compatible = "eswin,soc_version";
+			reg = < 0x30030000 0x10 >;
+			label = "SOC_VERSION";
+		};
+
+		cpu_freq: cpu_freq@30030010 {
+			compatible = "eswin,cpu_freq";
+	     	reg = < 0x30030010 0x4 >;
+		 	label = "CPU_FREQ";
+		};
+
+		soft_reset: soft_reset@30030014 {
+			compatible = "eswin,soft_reset";
+			reg = < 0x30030014 0x4 >;
+		 	label = "SOFT_RESET";
+		};
+
+		cs_control: cs_control@3003001c {
+			compatible = "eswin,cs_control";
+			reg = < 0x3003001c 0x4 >;
+			label = "CS_CONTROL";
+		};
+
+        clic: interrupt-controller@2800000 {
+			#interrupt-cells = <2>;
+			compatible = "eswin,clic";
+			interrupt-controller;
+			reg = <
+			    0x2800000 0x0080
+				0x2800400 0x0080
+				0x2800800 0x0080
+				0x2800C00 0x0001>;
+			label = "ESWIN_CLIC";
+		};
+
+		uart0: uart@30010000 {
+            compatible = "ns16550", "snps,dw-apb-uart";
+            interrupts = <16 1>;
+            interrupt-parent = < &clic >;
+            clock-frequency = < 10000000 >;
+            reg = < 0x30010000 0x2000 >;
+            reg-shift = <2>;
+            label = "UART_0";
+		};
+
+        mtimer: timer@2000000 {
+			compatible = "eswin,machine-timer";
+			reg = <0x2000000 0x200>;
+			interrupts = <7 1>;
+			interrupt-parent = <&clic>;
+			status = "disabled";
+		};
+
+	};
+};

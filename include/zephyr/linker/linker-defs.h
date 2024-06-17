@@ -127,6 +127,12 @@ extern char __rom_region_start[];
 extern char __rom_region_end[];
 extern char __rom_region_size[];
 
+#ifndef CONFIG_QEMU_TARGET
+extern char __rodata_region_start[];
+extern char __rodata_region_end[];
+extern char __rodata_region_size[];
+#endif
+
 /* Includes all ROMable data, i.e. the size of the output image file. */
 extern char _flash_used[];
 

@@ -80,6 +80,12 @@ config UART_NS16550_ITE_HIGH_SPEED_BUADRATE
 	  Enable IT8XXX2 specific baud rate configuration.
 	  This applies to high-speed baud rate configuration.
 
+config UART_NS16550_SYNOPSYS_DW_APB_UART
+	bool "NS16550 using Synopsys designware APB uart ip"
+	default n
+	help
+	  In some case, clear rbr register for ns16550 (DesignWare UART) will cause uart error.
+
 menu "NS16550 Workarounds"
 
 config UART_NS16550_WA_ISR_REENABLE_INTERRUPT

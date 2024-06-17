@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+
+if BOARD_ESWIN_E330
+
+config BOARD
+	default "eswin_e330"
+
+config SYS_CLOCK_TICKS_PER_SEC
+	default 128
+
+config SYS_CLOCK_HW_CYCLES_PER_SEC
+	default 1000000
+
+config THREAD_LOCAL_STORAGE
+	default y
+
+endif # BOARD_ESWIN_E330

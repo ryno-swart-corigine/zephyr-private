@@ -74,6 +74,7 @@ struct __esf {
 
 	unsigned long mepc;		/* machine exception program counter */
 	unsigned long mstatus;	/* machine status register */
+	unsigned long mcause;
 
 	unsigned long s0;		/* callee-saved s0 */
 

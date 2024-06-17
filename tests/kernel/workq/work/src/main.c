@@ -720,6 +720,12 @@ ZTEST(work_1cpu, test_1cpu_running_cancel)
 	 */
 	k_busy_wait(1000 * (ms_timeout + 1));
 
+	/* If use CONFIG_RISCV_ALWAYS_SWITCH_THROUGH_ECALL, this test will pass.
+	 * If not use CONFIG_RISCV_ALWAYS_SWITCH_THROUGH_ECALL, this test will fail:
+	 * zassert_equal(k_timer_status_get(&ctx->timer), 1) move behind
+	 * zassert_true(k_work_cancel_sync(wp, &work_sync)), it will pass.
+	 */
+	/* busy_wait do not give up CPU, can not sync */
 	zassert_equal(k_timer_status_get(&ctx->timer), 1);
 
 	/* Wait for cancellation to complete. */

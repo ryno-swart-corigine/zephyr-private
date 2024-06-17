@@ -25,7 +25,7 @@
 #define PRIORITY 7
 
 /* delay between greetings (in ms) */
-#define SLEEPTIME 500
+#define SLEEPTIME 10
 
 
 /*
@@ -61,7 +61,7 @@ void hello_loop(const char *my_name,
 		}
 
 		/* wait a while, then let other thread have a turn */
-		k_busy_wait(100000);
+		k_busy_wait(10000);
 		k_msleep(SLEEPTIME);
 		k_sem_give(other_sem);
 	}

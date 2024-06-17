@@ -172,6 +172,13 @@ static inline void trigger_irq(int irq)
 {
 	riscv_clic_irq_set_pending(irq);
 }
+#elif defined(CONFIG_ESWIN_CLIC)
+void eswin_clic_irq_pend_enable(uint32_t irq);
+void eswin_clic_irq_pend_disable(uint32_t irq);
+static inline void trigger_irq(int irq)
+{
+    eswin_clic_irq_pend_enable(irq);
+}
 #else
 static inline void trigger_irq(int irq)
 {

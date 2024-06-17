@@ -166,6 +166,9 @@
 #define MSTATUS_FS_CLEAN (2UL << 13)
 #define MSTATUS_FS_DIRTY (3UL << 13)
 
+#define MINTSTATUS_MPP_M (3UL << 28)
+#define MINTSTATUS_MPIE_EN	(1UL << 27)
+
 /* This comes from openisa_rv32m1, but doesn't seem to hurt on other
  * platforms:
  * - Preserve machine privileges in MPP. If you see any documentation
