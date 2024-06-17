@@ -104,6 +104,7 @@ void isr_handler(const void *param)
 
 #endif
 
+#if defined(CONFIG_DYNAMIC_INTERRUPTS)
 static void init_dyn_interrupt(void)
 {
 	/* If we cannot get a dynamic interrupt, skip test. */
@@ -121,6 +122,7 @@ static void init_dyn_interrupt(void)
 	zassert_true(vector_num > 0, "no vector can be used");
 	irq_enable(TEST_IRQ_DYN_LINE);
 }
+#endif
 
 static void trigger_offload_interrupt(const bool real_irq, void *work)
 {
@@ -161,10 +163,12 @@ static void init_env(int real_irq)
 	orig_t_keep_run = 0;
 	wait_for_end = false;
 
+#if defined(CONFIG_DYNAMIC_INTERRUPTS)
 	/* initialize the dynamic interrupt while using it */
 	if (real_irq && !vector_num) {
 		init_dyn_interrupt();
 	}
+#endif
 
 	/* initialize all the k_work */
 	for (int i = 0; i < NUM_WORK; i++) {

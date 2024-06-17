@@ -112,7 +112,7 @@ MEMORY
     LINKER_DT_REGIONS()
 
     /* Used by and documented in include/linker/intlist.ld */
-    IDT_LIST  (wx)      : ORIGIN = 0xFFFFF7FF, LENGTH = 2K
+    IDT_LIST  (wx)      : ORIGIN = 0xFF000000, LENGTH = 10K
 }
 
 ENTRY(CONFIG_KERNEL_ENTRY)
@@ -232,6 +232,23 @@ SECTIONS
     GROUP_END(ROMABLE_REGION)
 
     GROUP_START(RAMABLE_REGION)
+
+    /* rodata at ram regioon */
+    SECTION_PROLOGUE(_RODATA_SECTION_NAME,,)
+	{
+        __rodata_region_start = .;
+		 . = ALIGN(4);
+		 *(.srodata)
+		 *(".srodata.*")
+		 *(.rodata)
+		 *(".rodata.*")
+		 *(.gnu.linkonce.r.*)
+		 *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
+	. = ALIGN(4);
+	} GROUP_LINK_IN(RAMABLE_REGION)
+
+	__rodata_region_end = .;
+	__rodata_region_size = __rodata_region_end - __rodata_region_start;
 
 	. = RAM_BASE;
 	_image_ram_start = .;

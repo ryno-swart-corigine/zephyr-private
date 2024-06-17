@@ -703,8 +703,11 @@ static int uart_ns16550_configure(const struct device *dev,
 		dev_data->fifo_size = 1;
 	}
 
+    /* dw apb uart don't need clear the port, otherwise uart state will error */
+#ifndef CONFIG_UART_NS16550_SYNOPSYS_DW_APB_UART
 	/* clear the port */
 	ns16550_inbyte(dev_cfg, RDR(dev));
+#endif
 
 	/* disable interrupts  */
 	ns16550_outbyte(dev_cfg, IER(dev), 0x00);

@@ -1,0 +1,5 @@
+# Copyright (c) 2022 ESWIN Co,ltd.
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC
+	default "e330" if SOC_ESWIN_E330

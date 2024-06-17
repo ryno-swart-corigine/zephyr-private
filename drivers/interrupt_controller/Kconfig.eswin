@@ -1,0 +1,25 @@
+# Eswin Core local interrupt-controller configuration
+
+# Copyright (c) 2022 ESWIN Co,ltd.
+# SPDX-License-Identifier: Apache-2.0
+
+DT_COMPAT_ESWIN_CLIC = eswin,clic
+
+config ESWIN_CLIC
+	bool "Eswin Core Local Interrupt Controller (CLIC)"
+	default $(dt_compat_enabled,$(DT_COMPAT_ESWIN_CLIC))
+	help
+	  Interrupt controller for Eswin SoC core.
+
+config CLIC_MAX_INT_CTRL_BITS
+	int "max nlbits for eswin clic"
+	default 7
+	help
+	  Set nlbits max value for ciccfg registers.
+
+config CLIC_INT_CTRL_BITS
+	int "nlbits value for eswin clic"
+	default 7
+	help
+	  Set current nlbits value for ciccfg registers.
+	  

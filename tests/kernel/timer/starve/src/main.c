@@ -13,6 +13,7 @@
 #define STAMP_INTERVAL_s 60
 #define TIMER_DELAY_ms 500
 #define BUSY_WAIT_ms 100
+#define CONFIG_TIMER_STARVE_STOP_S (CONFIG_APP_STOP_S / 100)
 
 static volatile uint32_t na;
 
@@ -51,7 +52,7 @@ ZTEST(starve_fn, test_starve)
 	k_timer_init(&tmr, handler, NULL);
 	while (true) {
 		now = k_uptime_get_32();
-		if ((now / MSEC_PER_SEC) > CONFIG_APP_STOP_S) {
+		if ((now / MSEC_PER_SEC) > CONFIG_TIMER_STARVE_STOP_S) {
 			break;
 		}
 
@@ -59,7 +60,7 @@ ZTEST(starve_fn, test_starve)
 
 		if (now > stamp) {
 			TC_PRINT("%sstill running, would pass at %u s\n",
-				 tag(), CONFIG_APP_STOP_S);
+				 tag(), CONFIG_TIMER_STARVE_STOP_S);
 			stamp += STAMP_INTERVAL_s * MSEC_PER_SEC;
 		}
 

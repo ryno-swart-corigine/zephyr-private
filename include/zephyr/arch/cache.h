@@ -25,6 +25,46 @@
 #include <zephyr/arch/xtensa/cache.h>
 #endif
 
+#if defined(CONFIG_BOARD_ESWIN_E330)
+#define L1_CACHE_BYTES 16
+#define ALIGN(x, a)       (((x) + (a) - 1) & ~((a) - 1))
+#define CBO_INVAL_A0	".word 0x05200F"
+#define CBO_CLEAN_A0	".word 0x15200F"
+#define CBO_FLUSH_A0	".word 0x25200F"
+#define ALT_CMO_OP(_op, _start, _size)  		\
+__asm__ volatile(								\
+	"mv t1, %2\n"								\
+	"mv a0, %1\n"								\
+	"j 2f\n"									\
+	"3:\n"									    \
+	CBO_##_op##_A0"\n"							\
+	"addi a0, a0, %0\n"							\
+	"2:\n"									    \
+	"bltu a0, t1, 3b\n"   	                    \
+	: : "I"(L1_CACHE_BYTES), "r"((_start) & ~(L1_CACHE_BYTES - 1)),			\
+	    "r"(ALIGN((_start) + (_size), L1_CACHE_BYTES)))
+
+static inline void riscv_invalid_dcache_range(int addr, int size)
+{
+    ALT_CMO_OP(INVAL, addr, size);
+}
+
+static inline void riscv_flush_dcache_range(int addr, int size)
+{
+    ALT_CMO_OP(FLUSH, addr, size);
+}
+
+static inline void riscv_clean_dcache_range(int addr, int size)
+{
+    ALT_CMO_OP(CLEAN, addr, size);
+}
+
+static inline void riscv_dcache_clean_all()
+{
+	__asm__ volatile(".word 0x400F");
+}
+#endif
+
 #if defined(CONFIG_DCACHE) || defined(__DOXYGEN__)
 
 /**

@@ -175,6 +175,11 @@ static inline void trigger_irq(int irq)
 #else
 static inline void trigger_irq(int irq)
 {
+#if defined(CONFIG_ESWIN_CLIC)
+   eswin_clic_irq_pend_enable(irq);
+   return;
+#endif
+
 	uint32_t mip;
 
 	__asm__ volatile ("csrrs %0, mip, %1\n"

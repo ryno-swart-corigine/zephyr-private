@@ -146,3 +146,25 @@ config RISCV_ISA_EXT_ZBS
 	  The Zbs instructions can be used for single-bit instructions that
 	  provide a mechanism to set, clear, invert, or extract a single bit in
 	  a register.
+
+config RISCV_ISA_EXT_B
+	bool
+	help
+	  BitManip Extension (all B instructions)
+
+	  All BitManip Zba, Zbb, Zbc and Zbs extensions.
+
+config RISCV_ISA_EXT_P
+	bool
+	help
+	  P Extension (SIMD)
+
+	  P instruction set extension for DSP algorithm, named "P".
+
+config RISCV_ISA_EXT_ZICOND
+	bool
+	help
+	   Zicond extension
+
+	   Zicond extension include czero.qez, czero.nez, named "Zicond".
+	   

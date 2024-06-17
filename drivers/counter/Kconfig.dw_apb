@@ -1,0 +1,10 @@
+# Counter and timer configuration options
+
+# Copyright (c) 2022 Jerry Chai <chaizhiyong@eswin.com>
+# SPDX-License-Identifier: Apache-2.0
+
+config TIMER_DW_APB
+	bool "Synopsys DesignWare APB Timer driver"
+	help
+	  The timers (TMR) present in the platform are used as timers.
+	  This option enables the support for the timers.

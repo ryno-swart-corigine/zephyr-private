@@ -197,6 +197,7 @@ epfl	Ecole Polytechnique Fédérale de Lausanne
 epson	Seiko Epson Corp.
 espressif	Espressif Systems
 est	ESTeem Wireless Modems
+eswin	Beijing ESWIN Technology Group Co., Ltd.
 ettus	NI Ettus Research
 eukrea	Eukréa Electromatique
 everest	Everest Semiconductor Co. Ltd.

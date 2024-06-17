@@ -164,6 +164,11 @@ static bool set_pmp_entry(unsigned int *index_p, uint8_t perm,
 	__ASSERT((start & (CONFIG_PMP_GRANULARITY - 1)) == 0, "misaligned start address");
 	__ASSERT((size & (CONFIG_PMP_GRANULARITY - 1)) == 0, "misaligned size");
 
+    if (size == 4) {
+		size = 8;
+		/* adapt for E330, PMP granularity G=1, 8byte */
+	}
+
 	if (index >= index_limit) {
 		LOG_ERR("out of PMP slots");
 		ok = false;
@@ -325,10 +330,18 @@ void z_riscv_pmp_init(void)
 	unsigned int index = 0;
 
 	/* The read-only area is always there for every mode */
-	set_pmp_entry(&index, PMP_R | PMP_X | PMP_L,
+	set_pmp_entry(&index, PMP_R | PMP_W | PMP_X | PMP_L,
 		      (uintptr_t)__rom_region_start,
 		      (size_t)__rom_region_size,
 		      pmp_addr, pmp_cfg, ARRAY_SIZE(pmp_addr));
+
+#ifndef CONFIG_QEMU_TARGET
+	/* rodata locates at RAM region, always RWX for every mode */
+	set_pmp_entry(&index, PMP_R | PMP_L,        
+		      (uintptr_t)__rodata_region_start,
+		      (size_t)__rodata_region_size,
+		      pmp_addr, pmp_cfg, ARRAY_SIZE(pmp_addr));
+#endif
 
 #ifdef CONFIG_NULL_POINTER_EXCEPTION_DETECTION_PMP
 	/*

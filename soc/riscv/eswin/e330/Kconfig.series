@@ -1,0 +1,14 @@
+# ESWIN E330 SOC implementation
+
+# Copyright (c) 2022 ESWIN Co,ltd.
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_SERIES_ESWIN_E330
+	bool "ESWIN E330 series SoC implementation"
+	select RISCV
+	select RISCV_PRIVILEGED
+    select DT_HAS_ESWIN_MACHINE_TIMER_ENABLED
+	select CPU_HAS_FPU
+	select SOC_FAMILY_ESWIN
+	help
+	  Enable support for ESWIN E330 series SOC

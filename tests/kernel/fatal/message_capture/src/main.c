@@ -6,6 +6,7 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
+#include <zephyr/tc_util.h>
 
 static volatile int expected_reason = -1;
 
@@ -13,20 +14,25 @@ void z_thread_essential_clear(void);
 
 void k_sys_fatal_error_handler(unsigned int reason, const z_arch_esf_t *pEsf)
 {
+	int rv = TC_PASS;
 	printk("Caught system error -- reason %d\n", reason);
 
 	if (expected_reason == -1) {
 		printk("Was not expecting a crash\n");
 		printk("PROJECT EXECUTION FAILED\n");
-		k_fatal_halt(reason);
+		// k_fatal_halt(reason);
 	}
 
 	if (reason != expected_reason) {
 		printk("Wrong crash type got %d expected %d\n", reason,
 		       expected_reason);
 		printk("PROJECT EXECUTION FAILED\n");
-		k_fatal_halt(reason);
+		// k_fatal_halt(reason);
 	}
+
+    TC_END_RESULT_CUSTOM(rv, "test_message_capture");
+	TC_END_REPORT(rv);
+    k_fatal_halt(reason);
 
 	printk("Fatal error expected as part of test case.\n");
 

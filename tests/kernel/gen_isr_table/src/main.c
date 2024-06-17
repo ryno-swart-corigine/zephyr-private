@@ -28,7 +28,7 @@ extern uint32_t _irq_vector_table[];
 #else
 
 /* RISC-V has very few IRQ lines which can be triggered from software */
-#define ISR3_OFFSET	1
+#define ISR3_OFFSET	3
 
 /* Since we have so few lines we have to share the same line for two different
  * tests
@@ -38,7 +38,7 @@ extern uint32_t _irq_vector_table[];
 #else
 #define ISR5_OFFSET	5
 #endif
-#define TRIG_CHECK_SIZE	6
+#define TRIG_CHECK_SIZE	10
 #endif
 
 #define IRQ_LINE(offset)        offset
@@ -90,7 +90,7 @@ extern uint32_t _irq_vector_table[];
 				 (CONFIG_NUM_IRQS - TEST_NUM_IRQS))
 #define IRQ_LINE(offset)	(TEST_NUM_IRQS - ((offset) + 1))
 #define TABLE_INDEX(offset)	(TEST_IRQ_TABLE_SIZE - ((offset) + 1))
-#define TRIG_CHECK_SIZE		6
+#define TRIG_CHECK_SIZE		10
 #endif
 
 #define ISR3_ARG	0xb01dface
@@ -131,6 +131,7 @@ void isr3(const void *param)
 {
 	printk("%s ran with parameter %p\n", __func__, param);
 	trigger_check[ISR3_OFFSET]++;
+	eswin_clic_irq_pend_disable(ISR3_OFFSET);
 }
 #endif
 

@@ -45,7 +45,7 @@
 #endif /* CONFIG_SHARED_INTERRUPTS */
 
 /* Architecture-specific sections */
-#if defined(CONFIG_ARM)
+#if defined(CONFIG_ARM) || (CONFIG_RISCV)
 #define _KINETIS_FLASH_CONFIG_SECTION_NAME  kinetis_flash_config
 #define _TI_CCFG_SECTION_NAME	        .ti_ccfg
 

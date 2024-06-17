@@ -9,6 +9,7 @@ zephyr_syscall_header(${ZEPHYR_BASE}/include/zephyr/drivers/counter.h)
 
 zephyr_library()
 
+zephyr_library_sources_ifdef(CONFIG_TIMER_DW_APB                timer_dw_apb.c)
 zephyr_library_sources_ifdef(CONFIG_TIMER_TMR_CMSDK_APB         timer_tmr_cmsdk_apb.c)
 zephyr_library_sources_ifdef(CONFIG_TIMER_DTMR_CMSDK_APB        timer_dtmr_cmsdk_apb.c)
 zephyr_library_sources_ifdef(CONFIG_COUNTER_AMBIQ               counter_ambiq_timer.c)
