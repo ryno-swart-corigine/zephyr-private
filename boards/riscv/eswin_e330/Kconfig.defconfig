@@ -8,6 +8,9 @@ config BOARD
 config SYS_CLOCK_TICKS_PER_SEC
 	default 128
 
+config SYS_CLOCK_HW_CYCLES_PER_SEC
+	default 4000000
+
 config THREAD_LOCAL_STORAGE
 	default y
 
