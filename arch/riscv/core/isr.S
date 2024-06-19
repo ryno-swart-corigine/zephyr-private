@@ -175,8 +175,8 @@ SECTION_FUNC(exception.entry, _isr_wrapper)
 	sr t2, __z_arch_esf_t_mstatus_OFFSET(sp)
 
 	/* Save MCAUSE register */
-	csrr t2, mcause
-	sr t2, __z_arch_esf_t_mcause_OFFSET(sp)
+	csrr t1, mcause
+	sr t1, __z_arch_esf_t_mcause_OFFSET(sp)
 
 #if defined(CONFIG_FPU_SHARING)
 	/* determine if FPU access was disabled */
