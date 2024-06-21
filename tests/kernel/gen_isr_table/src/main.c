@@ -36,7 +36,8 @@ extern uint32_t _irq_vector_table[];
 #ifdef HAS_DIRECT_IRQS
 #define ISR1_OFFSET	5
 #else
-#define ISR5_OFFSET	5
+/* not support */
+// #define ISR5_OFFSET	5 
 #endif
 #define TRIG_CHECK_SIZE	10
 #endif
