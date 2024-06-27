@@ -19,6 +19,8 @@
 #define K_FP_OPTS (K_FP_REGS | K_SSE_REGS)
 #elif defined(CONFIG_X86) || defined(CONFIG_ARM) || defined(CONFIG_SPARC)
 #define K_FP_OPTS K_FP_REGS
+#elif defined(CONFIG_RISCV)
+#define K_FP_OPTS K_FP_REGS
 #else
 #error "Architecture not supported for this test"
 #endif
@@ -34,10 +36,13 @@ static void usr_fp_thread_entry_1(void *p1, void *p2, void *p3)
 	ARG_UNUSED(p2);
 	ARG_UNUSED(p3);
 
+	/* Yield will swap-in ztest_thread */
 	k_yield();
 }
 
 #if defined(CONFIG_ARM) || (defined(CONFIG_X86) && defined(CONFIG_LAZY_FPU_SHARING))
+#define K_FLOAT_DISABLE_SYSCALL_RETVAL 0
+#elif defined(CONFIG_RISCV)
 #define K_FLOAT_DISABLE_SYSCALL_RETVAL 0
 #else
 #define K_FLOAT_DISABLE_SYSCALL_RETVAL -ENOTSUP
@@ -104,6 +109,14 @@ ZTEST(k_float_disable, test_k_float_disable_common)
 		(usr_fp_thread.base.user_options & K_FP_OPTS) == 0,
 		"usr_fp_thread FP options not clear (0x%0x)",
 		usr_fp_thread.base.user_options);
+#elif defined(CONFIG_RISCV)
+	/* Verify FP mode can only be disabled for current thread */
+	zassert_true((k_float_disable(&usr_fp_thread) == 0),
+		"k_float_disable() failure when not support FP");
+	/* Verify K_FP_OPTS are still set */
+	zassert_true(
+		(usr_fp_thread.base.user_options & K_FP_OPTS) != 0,
+		"usr_fp_thread FP options must still set");
 #else
 	/* Verify k_float_disable() is not supported */
 	zassert_true((k_float_disable(&usr_fp_thread) == -ENOTSUP),
