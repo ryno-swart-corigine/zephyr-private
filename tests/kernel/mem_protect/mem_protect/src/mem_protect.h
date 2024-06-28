@@ -84,7 +84,7 @@ static inline void set_fault_valid(bool valid)
 #define TEST_HEAP_SIZE	(2 << CONFIG_MAX_THREAD_BYTES) * 1024
 #define MAX_OBJ 512
 #else
-#define TEST_HEAP_SIZE	(2 << CONFIG_MAX_THREAD_BYTES) * 256
+#define TEST_HEAP_SIZE	(2 << CONFIG_MAX_THREAD_BYTES) * 512
 #define MAX_OBJ 256
 #endif
 
