@@ -20,7 +20,7 @@
 	cpus {
 		#address-cells = < 0x01 >;
 		#size-cells = < 0x00 >;
-		timebase-frequency = < 40000000 >;
+		timebase-frequency = < 20000000 >;
 
 		cpu: cpu@0 {
 			device_type = "cpu";
@@ -104,7 +104,7 @@
             compatible = "ns16550", "snps,dw-apb-uart";
             interrupts = <16 1>;
             interrupt-parent = < &clic >;
-            clock-frequency = < 8000000 >;
+            clock-frequency = < 10000000 >;
             reg = < 0x30010000 0x2000 >;
             reg-shift = <2>;
             label = "UART_0";
