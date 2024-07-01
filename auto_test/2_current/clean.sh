@@ -16,13 +16,8 @@ while IFS= read -r line; do
   if [ -n "$line" ]; then
     cd /home/user/work/zephyr/src/zephyr/tests/kernel/$line
     rm -r e330
-    mkdir e330
-    cd e330
-    cmake -DBOARD=eswin_e330 ..
-    make
-    cd /home/user/work/zephyr/src/zephyr/tests/kernel/
-    echo "compile done: $line"
+    echo "clean done: $line"
   fi
 done < "$filename"
 
-echo "compile all done."
+echo "clean all done."
